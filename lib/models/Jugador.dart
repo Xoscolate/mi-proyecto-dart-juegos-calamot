@@ -1,3 +1,4 @@
+import 'Licencia.dart';
 class Jugador {
   final String email; // Identificador único
   String nick;

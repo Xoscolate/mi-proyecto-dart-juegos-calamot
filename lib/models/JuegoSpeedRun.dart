@@ -1,3 +1,5 @@
+import 'Videojuego.dart';
+
 class Juegospeedrun extends Videojuego<double> {
 
   Juegospeedrun(super.nombre, super.codigo, super.estilo, super.precioCompra, super.precioAlquiler);
@@ -8,7 +10,7 @@ class Juegospeedrun extends Videojuego<double> {
     var lista = puntuacions.entries.toList();
 
     // ORDENACIÓN: En Speedrun, el menor tiempo (a) va antes que el mayor (b)
-    lista.sort((a, b) => a.value.compareTo(b.value)); [cite: 249, 295]
+    lista.sort((a, b) => a.value.compareTo(b.value));
 
     StringBuffer sb = StringBuffer(); // Práctica recomendada para modificar strings
     sb.writeln("--- RÀNQUING SPEEDRUN (Més ràpids) ---");

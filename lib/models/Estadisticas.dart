@@ -9,7 +9,5 @@ class Estadisticas { //Este moelo lo utilizo
     if (total == 0) return 0.0;
     return (victorias / total) * 100;
   }
-  @override
-  String toString() => 'V: $victorias | D: $derrotas ($porcentaje%)';
-}
+
 }

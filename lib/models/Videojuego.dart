@@ -1,3 +1,4 @@
+import 'Estilo.dart';
 abstract class Videojuego<T> { // Se añade <T> aquí
   final String nombre;
   final String codigo;
