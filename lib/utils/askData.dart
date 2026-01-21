@@ -21,4 +21,16 @@ class askData {
   static void mostrarError(String error) {
     print("ERROR: $error");
   }
+
+  static String pedirPassword(String etiqueta) {
+    stdout.write("$etiqueta: ");
+
+    stdin.echoMode = false; // Esto lo he mirado en la ia para que la contraseña no se vea cuando inciias sesion
+    String password = stdin.readLineSync() ?? "";
+    stdin.echoMode = true;
+
+    print("");
+
+    return password;
+  }
 }

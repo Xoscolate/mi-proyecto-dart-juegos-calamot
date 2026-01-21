@@ -8,7 +8,6 @@ class LoginVista {
   static void mostrarMenuLogin(ControladorModeloVista controlador) {
     String mail = askData.pedirString("Correu electrònic");
     String contrasena = askData.pedirString("Contrasenya");
-
     try {
       controlador.entrar(mail, contrasena);
       askData.mostrarMensaje("Has iniciado Correctamente");

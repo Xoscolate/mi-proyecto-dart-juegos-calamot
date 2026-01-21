@@ -33,15 +33,7 @@ class ControladorModeloVista {
 
   void registrar(String email, String nick, String contrasena,) {
     verificarFormatoEmail(email);
-    bool yaExiste = false;
-    for (var j in _jugadores) {
-      if (j.email == email) {
-        yaExiste = true;
-      }
-    }
-    if (yaExiste) {
-      throw CalamotException("Aquest correu electrònic ja està registrat.");
-    } else {
+    emailExsiste(email);
       Jugador nuevoJugador = Jugador(
           email: email,
           nick: nick,
@@ -50,6 +42,19 @@ class ControladorModeloVista {
 
       _jugadores.add(nuevoJugador);
     }
+
+
+  void emailExsiste (String email){
+    bool yaExiste = false;
+    for (var j in _jugadores) {
+      if (j.email == email) {
+        yaExiste = true;
+      }
+    }
+      if (yaExiste) {
+        throw CalamotException("Este correo ya exsiste.");
+      }
   }
+
 }
 

@@ -4,6 +4,7 @@ import 'package:dart_juegos_calamot/viewmodels/ControladorModeloVista.dart';
 import 'package:dart_juegos_calamot/utils/askData.dart';
 import 'package:dart_juegos_calamot/views/LoginVista.dart';
 import 'package:dart_juegos_calamot/views/RegisterVista.dart';
+import 'package:dart_juegos_calamot/utils/calamotException.dart';
 
 void main(List<String> arguments) {
   askData.mostrarMensaje(" --- CALAMOT JUEGOS ---");
@@ -13,15 +14,38 @@ void main(List<String> arguments) {
 
   while (!salir) {
     if (controlador.usuarioCorrecto == null) {
-      askData.mostrarMensaje("");
       String opcion = askData.pedirString("[E] Entrar | [R] Registrar | [S] Sortir").toUpperCase();
-
       if (opcion == "E") {
-          LoginVista.mostrarMenuLogin(controlador);
+        LoginVista.mostrarMenuLogin(controlador);
       } else if (opcion == "R") {
         vistaRegistro(controlador);
       } else if (opcion == "S") {
         salir = true;
+      }else if (opcion != "E" || opcion != "R" || opcion != "S"){
+        askData.mostrarMensaje("Esa opcion no exsiste");
+      }
+    } else {
+      String nick = controlador.usuarioCorrecto!.nick;
+      askData.mostrarMensaje("\n--- MENÚ PRINCIPAL: $nick ---");
+      String opcion = askData.pedirString(
+          "[J] Jugar | [B] Botiga | [C] Comprar | [L] Llogar | [P] Provar | [D] Donar | [A] Amics | [F] Fer amic | [E] Enrera | [T] Tancar"
+      ).toUpperCase();
+
+      try {
+        if (opcion == "J") {
+        } else if (opcion == "B") {
+        } else if (opcion == "C" || opcion == "L" || opcion == "P") {
+        } else if (opcion == "D") {
+        } else if (opcion == "A") {
+        } else if (opcion == "F") {
+        } else if (opcion == "E") {
+          controlador.usuarioCorrecto = null;
+          askData.mostrarMensaje("Sessió tancada.");
+        } else if (opcion == "T") {
+          salir = true;
+        }
+      } on CalamotException catch (e) {
+        askData.mostrarError(e.missatge);
       }
     }
   }
