@@ -5,6 +5,7 @@ import 'package:dart_juegos_calamot/utils/askData.dart';
 import 'package:dart_juegos_calamot/views/LoginVista.dart';
 import 'package:dart_juegos_calamot/views/RegisterVista.dart';
 import 'package:dart_juegos_calamot/utils/calamotException.dart';
+import 'package:dart_juegos_calamot/views/TiendaVista.dart';
 
 void main(List<String> arguments) {
   askData.mostrarMensaje(" --- CALAMOT JUEGOS ---");
@@ -26,14 +27,17 @@ void main(List<String> arguments) {
       }
     } else {
       String nick = controlador.usuarioCorrecto!.nick;
+      controlador.inicializarTienda();
       askData.mostrarMensaje("\n--- MENÚ PRINCIPAL: $nick ---");
       String opcion = askData.pedirString(
-          "[J] Jugar | [B] Botiga | [C] Comprar | [L] Llogar | [P] Provar | [D] Donar | [A] Amics | [F] Fer amic | [E] Enrera | [T] Tancar"
+          "[J] Jugar | [B] Lista de Botiga | [C] Comprar | [L] Llogar | [P] Provar "
+              "| [D] Donar | [A] Amics | [F] Fer amic | [E] Enrera | [T] Tancar"
       ).toUpperCase();
 
       try {
         if (opcion == "J") {
         } else if (opcion == "B") {
+          TiendaVista.mostrarCatalogo(controlador);
         } else if (opcion == "C" || opcion == "L" || opcion == "P") {
         } else if (opcion == "D") {
         } else if (opcion == "A") {
