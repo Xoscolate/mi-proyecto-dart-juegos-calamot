@@ -2,6 +2,7 @@ import 'package:dart_juegos_calamot/models/videojuego.dart';
 import 'package:dart_juegos_calamot/models/jugador.dart';
 import 'package:dart_juegos_calamot/viewmodels/ControladorModeloVista.dart';
 import 'package:dart_juegos_calamot/utils/askData.dart';
+import 'package:dart_juegos_calamot/views/A%C3%B1adirAmigos.dart';
 import 'package:dart_juegos_calamot/views/ComprarJuegoVista.dart';
 import 'package:dart_juegos_calamot/views/LoginVista.dart';
 import 'package:dart_juegos_calamot/views/RegisterVista.dart';
@@ -44,6 +45,7 @@ void main(List<String> arguments) {
         } else if (opcion == "D") {
         } else if (opcion == "A") {
         } else if (opcion == "F") {
+          Anadiramigos.anadirAmigos(controlador);
         } else if (opcion == "E") {
           controlador.usuarioCorrecto = null;
           askData.mostrarMensaje("Sessió tancada.");

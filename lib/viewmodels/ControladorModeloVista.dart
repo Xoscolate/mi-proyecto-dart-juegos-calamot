@@ -88,6 +88,9 @@ class ControladorModeloVista {
     if(!exsisteId(id)){
       throw CalamotException("No exsiste ese juego en nuestra tienda");
     }
+    if(usuarioCorrecto == null){
+      throw CalamotException("Error inesperado");
+    }
     if (tipo == "C"){
       licencia = Licencia.compra(id);
       askData.mostrarMensaje("Has comprado el juego con exito :)");
@@ -104,6 +107,33 @@ class ControladorModeloVista {
     usuarioCorrecto!.licencias.add(licencia);
 
   }
+
+  bool amigoExsiste (String email){
+    for (var j in _jugadores) {
+      if(email == j.email){
+        return true;
+      }
+    }
+    return false;
+
+    }
+
+    void anadirAmigo (String email){
+    if (usuarioCorrecto == null) {
+      throw CalamotException("usuario inexsisitente");
+    }
+    if(!amigoExsiste(email)){
+      throw CalamotException("Ese amigo es inexsistente");
+    }
+    if (usuarioCorrecto!.email == email) {
+      throw CalamotException("¡No puedes ser tu propio amigo! Busca a otros guerreros.");
+    }
+
+    usuarioCorrecto!.amigos.add(email);
+  }
+
+
+
 
   List<Videojuego<dynamic>> obtenerJuegosFiltrados(String filtro) {
     List<Videojuego<dynamic>> listaFiltrada = []; // esta es la lista de lo que le pedimos
