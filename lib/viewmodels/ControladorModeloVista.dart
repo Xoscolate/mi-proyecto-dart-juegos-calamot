@@ -10,15 +10,19 @@ class ControladorModeloVista {
 
   Jugador? usuarioCorrecto; // esto comienza nulo pero con la funcion entrar le asigno si es correcto
 
-  bool entrar(String emailIntroducido) {
-    //metodo para el login
+  void entrar(String emailIntroducido, String contrasena) {
+    Jugador? encontrado;
     for (var jugador in _jugadores) {
-      if (jugador.email == emailIntroducido) {
-        usuarioCorrecto = jugador;
-        return true;
+      if (jugador.email == emailIntroducido &&
+          jugador.contrasena == contrasena) {
+        encontrado = jugador;
       }
     }
-    return false;
+    if (encontrado != null) {
+      usuarioCorrecto = encontrado;
+    } else {
+      throw CalamotException("Email o contrasenya incorrectes.");
+    }
   }
 
   void verificarFormatoEmail(String email) {
@@ -26,4 +30,26 @@ class ControladorModeloVista {
       throw CalamotException("El format de l'email '$email' no és vàlid.");
     }
   }
+
+  void registrar(String email, String nick, String contrasena,) {
+    verificarFormatoEmail(email);
+    bool yaExiste = false;
+    for (var j in _jugadores) {
+      if (j.email == email) {
+        yaExiste = true;
+      }
+    }
+    if (yaExiste) {
+      throw CalamotException("Aquest correu electrònic ja està registrat.");
+    } else {
+      Jugador nuevoJugador = Jugador(
+          email: email,
+          nick: nick,
+          contrasena: contrasena
+      );
+
+      _jugadores.add(nuevoJugador);
+    }
+  }
 }
+

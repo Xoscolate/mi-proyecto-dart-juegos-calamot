@@ -1,23 +1,21 @@
 import 'dart:io';
+import 'package:dart_juegos_calamot/utils/calamotException.dart';
+
 import '../viewmodels/ControladorModeloVista.dart';
+import 'package:dart_juegos_calamot/utils/askData.dart';
 
-class LoginView {
+class LoginVista {
   static void mostrarMenuLogin(ControladorModeloVista controlador) {
-    print("\n--- INICIO DE SESIÓN ---");
-    stdout.write("Introduce tu e-mail para entrar: ");
+    String mail = askData.pedirString("Correu electrònic");
+    String contrasena = askData.pedirString("Contrasenya");
 
-    String email = stdin.readLineSync() ?? "";
-
-    controlador.verificarFormatoEmail(email);
-
-
-    bool exito = controlador.entrar(email);
-
-    if (exito) {
-      print("Login correcto");
-
-    } else {
-      print("Error: El usuario no existe. Inténtalo de nuevo.");
+    try {
+      controlador.entrar(mail, contrasena);
+      askData.mostrarMensaje("Has iniciado Correctamente");
+    } on CalamotException catch (e) {
+      askData.mostrarError(e.missatge);
+    } catch (e) {
+      askData.mostrarError("Error inesperado: $e");
     }
   }
 }
