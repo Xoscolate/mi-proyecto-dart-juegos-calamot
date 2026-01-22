@@ -1,5 +1,6 @@
 import 'package:dart_juegos_calamot/models/JuegoPuntos.dart';
 import 'package:dart_juegos_calamot/models/JuegoSpeedRun.dart';
+import 'package:dart_juegos_calamot/views/DarJuego.dart';
 
 import '../models/Jugador.dart';
 import '../models/Videojuego.dart';
@@ -9,6 +10,7 @@ import 'package:dart_juegos_calamot/utils/calamotException.dart';
 import 'package:dart_juegos_calamot/models/Estilo.dart';
 import 'package:dart_juegos_calamot/models/Licencia.dart';
 import 'package:dart_juegos_calamot/models/TiposLicencia.dart';
+import 'package:dart_juegos_calamot/views/DarJuego.dart';
 
 class ControladorModeloVista {
   final List<Jugador> _jugadores = []; //lista de jugadores
@@ -118,6 +120,19 @@ class ControladorModeloVista {
 
     }
 
+  void tienesJuego(String idJuego) {
+    bool yaLoTiene = false;
+
+    for (var l in usuarioCorrecto!.licencias) {
+      if (l.idVideojuego == idJuego) {
+        yaLoTiene = true;
+      }
+    }
+
+    if (yaLoTiene) {
+      throw CalamotException("Ya tienes este juego en tu biblioteca");
+    }
+  }
     void anadirAmigo (String email){
     if (usuarioCorrecto == null) {
       throw CalamotException("usuario inexsisitente");
@@ -126,10 +141,15 @@ class ControladorModeloVista {
       throw CalamotException("Ese amigo es inexsistente");
     }
     if (usuarioCorrecto!.email == email) {
-      throw CalamotException("¡No puedes ser tu propio amigo! Busca a otros guerreros.");
+      throw CalamotException("No puedes ser tu propio amigo, buscate alguno loquete.");
     }
 
     usuarioCorrecto!.amigos.add(email);
+    for(var j in _jugadores){
+      if (j.email == email){
+        j.amigos.add(email);
+      }
+    }
   }
 
 
@@ -145,6 +165,131 @@ class ControladorModeloVista {
     }
     return listaFiltrada;
     }
+
+    void darJuego(String idLicencia, String emailAmigo){
+      if (usuarioCorrecto == null) {
+        throw CalamotException("usuario inexsisitente");
+      }
+    }
+
+    void validacionCambios (String idLicenciaADonar, String emailDestinatario){
+      Licencia? licEncontrada;
+      for (var lic in usuarioCorrecto!.licencias) {
+        if (lic.id == idLicenciaADonar) {
+          licEncontrada = lic;
+        }
+      }
+
+      if (licEncontrada == null) {
+        throw CalamotException("No tienes esta licencia.");
+      }
+
+      if (licEncontrada.cambiosRestantes <= 0) {
+        throw CalamotException("Esta licencia no se puede dar a un amigo.");
+      }
+    }
+  void ejecutarTraspaso(String idLicencia, String emailAmigo) {
+    String idBuscado = idLicencia.trim();
+    String emailBuscado = emailAmigo.trim().toLowerCase();
+    Licencia? licenciaParaMover;
+    for (var lic in usuarioCorrecto!.licencias) {
+      if (lic.id == idBuscado) {
+        licenciaParaMover = lic;
+      }
+    }
+    if (licenciaParaMover != null) {
+      if (!licenciaParaMover.intentarTransferencia()) {
+        throw CalamotException("Lo siento no tienes mas transferencias restantes.");
+      }
+      bool entregado = false;
+      for (var j in _jugadores) {
+        if (j.email.trim().toLowerCase() == emailBuscado) {
+          j.licencias.add(licenciaParaMover);
+          entregado = true;
+        }
+      }
+      if (entregado) {
+        usuarioCorrecto!.licencias.remove(licenciaParaMover);
+      } else {
+        throw CalamotException("No se ha encontrado al jugador con ese email");
+      }
+    } else {
+      throw CalamotException("No se ha encontrado la licencia con ese ID");
+    }
+  }
+
+
+
+
+
+  void amigoTieneEseJuego(String idLicencia, String amigo) {
+    bool loTiene = false;
+    String codigo = "";
+    for (var lic in usuarioCorrecto!.licencias) {
+      if (lic.id == idLicencia) {
+        codigo = lic.idVideojuego;
+      }
+    }
+    Jugador? receptor;
+    for (var jug in _jugadores) {
+      if (jug.email == amigo) {
+        receptor = jug;
+      }
+    }
+    if (receptor != null) {
+      for (var l in receptor.licencias) {
+        if (l.idVideojuego == codigo) {
+          loTiene = true;
+        }
+      }
+    }
+    if (loTiene) {
+      throw CalamotException("Tu amigo ya tiene ese juego en su biblioteca");
+    }
+  }
+
+    void mostrarAmigos(){
+
+      if (usuarioCorrecto?.amigos.isEmpty ?? true) {
+        throw CalamotException("Ahora mismo no tienes amigos");
+    }
+
+    for (String a in usuarioCorrecto!.amigos){
+      for(var j in _jugadores){
+        if (a == j.email){
+          DarJuego.mostrarAmigos(j);
+        }
+      }
+    }
+    }
+
+  void juegosQueTienes() {
+    if (usuarioCorrecto?.licencias.isEmpty ?? true) {
+      throw CalamotException("Ahora mismo no tienes licencias");
+    }
+    for (var a in usuarioCorrecto!.licencias) {
+      for (var j in _juegos) {
+        if (a.idVideojuego == j.codigo) {
+          DarJuego.mostrarJuegos(j, a);
+        }
+      }
+    }
+  }
+
+    void exsisteAmigo(String emailBuscar){
+    bool exsiste = false;
+    for (String email in usuarioCorrecto!.amigos) {
+      if (email == emailBuscar) {
+        exsiste = true;
+         }
+      }
+    if (!exsiste){
+      throw CalamotException("No exsiste ese amigo");
+    }
+    }
+
+
+
 
 
 }

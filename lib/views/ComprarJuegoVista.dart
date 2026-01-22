@@ -14,6 +14,7 @@ class Comprarjuegovista {
     TiendaVista.mostrarCatalogo(controlador);
     askData.mostrarMensaje("Introduce el ID del juego");
     String idJuego = askData.pedirString("");
+    controlador.tienesJuego(idJuego);
     controlador.adquirirLicencia(tipo, controlador, idJuego);
   }
 

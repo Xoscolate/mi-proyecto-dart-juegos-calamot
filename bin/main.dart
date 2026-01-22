@@ -4,6 +4,7 @@ import 'package:dart_juegos_calamot/viewmodels/ControladorModeloVista.dart';
 import 'package:dart_juegos_calamot/utils/askData.dart';
 import 'package:dart_juegos_calamot/views/A%C3%B1adirAmigos.dart';
 import 'package:dart_juegos_calamot/views/ComprarJuegoVista.dart';
+import 'package:dart_juegos_calamot/views/DarJuego.dart';
 import 'package:dart_juegos_calamot/views/LoginVista.dart';
 import 'package:dart_juegos_calamot/views/RegisterVista.dart';
 import 'package:dart_juegos_calamot/utils/calamotException.dart';
@@ -43,6 +44,7 @@ void main(List<String> arguments) {
         } else if (opcion == "C" || opcion == "L" || opcion == "P") {
           Comprarjuegovista.adquirirLicenciaVista(opcion,controlador);
         } else if (opcion == "D") {
+          DarJuego.darJuegoVista(controlador);
         } else if (opcion == "A") {
         } else if (opcion == "F") {
           Anadiramigos.anadirAmigos(controlador);

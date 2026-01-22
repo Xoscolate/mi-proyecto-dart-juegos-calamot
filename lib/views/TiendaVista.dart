@@ -1,7 +1,7 @@
 import '../viewmodels/ControladorModeloVista.dart';
 import '../utils/askData.dart';
 import '../utils/calamotException.dart';
-import '../models/videojuego.dart';
+import '../models/Videojuego.dart';
 
 
 class TiendaVista {
