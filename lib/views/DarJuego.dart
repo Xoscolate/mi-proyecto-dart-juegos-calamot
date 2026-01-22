@@ -11,7 +11,7 @@ import 'package:dart_juegos_calamot/models/Jugador.dart';
 
 class DarJuego {
   static void darJuegoVista (ControladorModeloVista controlador){
-    askData.mostrarMensaje("--- Darj Juego ---");
+    askData.mostrarMensaje("--- Dart Juego ---");
     askData.mostrarMensaje("A que amigo quieres dar el juego");
     controlador.mostrarAmigos();
     String amigoEmail = askData.pedirString("Escoge: ");
@@ -34,7 +34,7 @@ class DarJuego {
   }
 
   static void mostrarJuegos(Videojuego juego, Licencia licencia){
-    askData.mostrarMensaje("Nombre: ${juego.nombre} Email: ${juego.codigo} ${licencia.id}");
+    askData.mostrarMensaje("Nombre: ${juego.nombre} Codigo: ${juego.codigo} Licencia: ${licencia.id}");
   }
 
 

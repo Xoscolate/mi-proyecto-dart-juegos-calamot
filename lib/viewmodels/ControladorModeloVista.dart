@@ -11,6 +11,7 @@ import 'package:dart_juegos_calamot/models/Estilo.dart';
 import 'package:dart_juegos_calamot/models/Licencia.dart';
 import 'package:dart_juegos_calamot/models/TiposLicencia.dart';
 import 'package:dart_juegos_calamot/views/DarJuego.dart';
+import 'package:dart_juegos_calamot/views/ListarAmigos.dart';
 
 class ControladorModeloVista {
   final List<Jugador> _jugadores = []; //lista de jugadores
@@ -119,6 +120,19 @@ class ControladorModeloVista {
     return false;
 
     }
+  void tienesLicencia(String licencia) {
+    bool yaLoTiene = false;
+
+    for (var l in usuarioCorrecto!.licencias) {
+      if (l.id == licencia) {
+        yaLoTiene = true;
+      }
+    }
+
+    if (!yaLoTiene) {
+      throw CalamotException("No tienes este juego en tu biblioteca");
+    }
+  }
 
   void tienesJuego(String idJuego) {
     bool yaLoTiene = false;
@@ -245,6 +259,20 @@ class ControladorModeloVista {
     }
     if (loTiene) {
       throw CalamotException("Tu amigo ya tiene ese juego en su biblioteca");
+    }
+  }
+
+  void amigosAgregados() {
+    if (usuarioCorrecto?.amigos.isEmpty ?? true) {
+      throw CalamotException("Ahora mismo no tienes amigos");
+    }
+
+    for (String a in usuarioCorrecto!.amigos) {
+      for (var j in _jugadores) {
+        if (a == j.email) {
+          ListarAmigos.mostrarAmigo(j);
+        }
+      }
     }
   }
 
