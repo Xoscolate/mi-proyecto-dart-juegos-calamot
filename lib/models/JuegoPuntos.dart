@@ -1,3 +1,5 @@
+import 'package:dart_juegos_calamot/utils/calamotException.dart';
+
 import 'Videojuego.dart';
 
 class JuegoPuntos extends Videojuego<int> {
@@ -9,11 +11,14 @@ class JuegoPuntos extends Videojuego<int> {
   String mostrarHighscores() {
     // Corregido: 'puntuacions' debe coincidir con el getter de Videojuego
     var lista = puntuacions.entries.toList();
+    if(lista.isEmpty){
+      throw CalamotException("No hay ahora mismo ninguna puntuación");
+    }
 
     // Ordenamos de mayor a menor puntuación
     lista.sort((a, b) => b.value.compareTo(a.value));
 
-    StringBuffer sb = StringBuffer(); // Recomendado para modificar texto [cite: 37]
+    StringBuffer sb = StringBuffer();
     sb.writeln("--- Top Jugadores ---");
 
     for (var entry in lista.take(10)) {

@@ -11,13 +11,9 @@ import '../utils/askData.dart';
 
 
 
-class Prejuego {
-  static bool preJuegoVista(ControladorModeloVista controlador){
-    askData.mostrarMensaje("--- Juegos disponibles ---");
-    controlador.juegosQueTienes();
-    String idJuego = askData.pedirString("Que juego quieres jugar (licencia): ");
-    controlador.tienesLicencia(idJuego);
-    controlador.activarJuego(idJuego);
-    return true;
+class Puntuacionvista {
+  static void HighScoresVista(ControladorModeloVista controlador){
+    String puntuaciones = controlador.obtenerTablaPuntuaciones();
+    askData.mostrarMensaje(puntuaciones);
   }
 }

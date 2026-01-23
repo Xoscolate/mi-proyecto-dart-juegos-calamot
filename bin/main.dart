@@ -79,6 +79,7 @@ void main(List<String> arguments) {
 
         }else if (opcion == "E"){
           controlador.usuarioCorrecto = null;
+          controlador.juegoActivo = null;
           juego = false;
           askData.mostrarMensaje("Sessió tancada.");
         }else if (opcion == "T"){

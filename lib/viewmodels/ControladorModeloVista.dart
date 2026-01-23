@@ -18,6 +18,8 @@ class ControladorModeloVista {
   final List<Videojuego<dynamic>> _juegos = [];
   List<Videojuego<dynamic>> get  todosLosJuegos => _juegos; // lo utilizo como forma simple de ver todos los juegos en tienda
   Jugador? usuarioCorrecto; // esto comienza nulo pero con la funcion entrar le asigno si es correcto
+  Videojuego? juegoActivo;// Este es para saber a que juego se esta jugando
+  Licencia? licenciaActiva;
   List<Licencia> get licencias => usuarioCorrecto!.licencias;
 
 
@@ -126,6 +128,7 @@ class ControladorModeloVista {
     for (var l in usuarioCorrecto!.licencias) {
       if (l.id == licencia) {
         yaLoTiene = true;
+
       }
     }
 
@@ -133,6 +136,41 @@ class ControladorModeloVista {
       throw CalamotException("No tienes este juego en tu biblioteca");
     }
   }
+
+  void activarJuego(String licencia){
+    juegoActivo = null;
+    licenciaActiva = null;
+    for(var l in licencias){
+      if (l.id == licencia){
+        licenciaActiva = l;
+
+      }
+
+      }
+    if (licenciaActiva == null) {
+      throw CalamotException("No s'ha trobat la llicència indicada.");
+
+    }
+    for (var v in _juegos) {
+      if (v.codigo == licenciaActiva!.idVideojuego) {
+        juegoActivo = v;
+      }
+    }
+    if (juegoActivo == null) {
+      throw CalamotException("El joc d'aquesta llicència no existeix a la botiga.");
+    }
+
+    }
+
+
+  String obtenerTablaPuntuaciones(){
+      if (juegoActivo == null) {
+        throw CalamotException("ERROR: no hay juego");
+      }
+      return juegoActivo!.mostrarHighscores();
+  }
+
+
 
   void tienesJuego(String idJuego) {
     bool yaLoTiene = false;
