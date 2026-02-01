@@ -11,6 +11,10 @@ import 'package:dart_juegos_calamot/views/RegisterVista.dart';
 import 'package:dart_juegos_calamot/utils/calamotException.dart';
 import 'package:dart_juegos_calamot/views/TiendaVista.dart';
 import 'package:dart_juegos_calamot/views/PreJuego.dart';
+import 'package:dart_juegos_calamot/views/CrearPuntuacionVista.dart';
+import 'package:dart_juegos_calamot/views/PuntuacionVista.dart';
+
+
 
 void main(List<String> arguments) {
   askData.mostrarMensaje(" --- CALAMOT JUEGOS ---");
@@ -72,10 +76,11 @@ void main(List<String> arguments) {
       ).toUpperCase();
       try {
         if(opcion == "H"){
-
+        Puntuacionvista.HighScoresVista(controlador);
         }else if (opcion == "G"){
 
         }else if (opcion == "P"){
+        Crearpuntuacionvista.CrearPuntuacion(controlador);
 
         }else if (opcion == "E"){
           controlador.usuarioCorrecto = null;

@@ -1,5 +1,3 @@
-import 'package:dart_juegos_calamot/models/JuegoPuntos.dart';
-import 'package:dart_juegos_calamot/models/JuegoSpeedRun.dart';
 import 'package:dart_juegos_calamot/views/DarJuego.dart';
 
 import '../models/Jugador.dart';
@@ -73,7 +71,6 @@ class ControladorModeloVista {
 
   void inicializarTienda() {
     if (_juegos.isEmpty) {
-      _juegos.add(Juegospeedrun("Mario Bros","mario",Estilo.plataformes,29.99,2.99));
       _juegos.add(JuegoPuntos("Doom Eternal","doom",Estilo.shooter,39.99,4.99));
 
     }
@@ -162,12 +159,29 @@ class ControladorModeloVista {
 
     }
 
+  void registrarPuntuacioPartida(String puntuacionString) {
+    if (usuarioCorrecto == null) {
+      throw CalamotException("Has d'estar loguejat per puntuar.");
+    }
+    if (juegoActivo == null) {
+      throw CalamotException("No hi ha cap joc seleccionat per rebre punts.");
+    }
+    int? puntos = int.tryParse(puntuacionString);
+    if (puntos == null) {
+      throw CalamotException("ERROR esta puntuacion no es correcta en este juego de puntos");
+    }
+    juegoActivo!.puntuar(usuarioCorrecto!.email, puntos);
+  }
 
-  String obtenerTablaPuntuaciones(){
-      if (juegoActivo == null) {
+
+
+
+  List<MapEntry<String, dynamic>> obtenerDatosPuntuaciones() { //utilizo dynamic porque como hay diferentes tipos de puntuaciones luego las declaro.
+
+    if (juegoActivo == null) {
         throw CalamotException("ERROR: no hay juego");
       }
-      return juegoActivo!.mostrarHighscores();
+      return juegoActivo!.obtenerDatosHighscores();
   }
 
 

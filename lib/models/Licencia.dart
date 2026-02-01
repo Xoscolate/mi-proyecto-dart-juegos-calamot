@@ -1,6 +1,5 @@
 import 'dart:math';
 
-// Enum ajustado al enunciado
 enum TipoLicencia { compra, alquiler, prueba }
 
 class Licencia {
@@ -11,19 +10,17 @@ class Licencia {
   int _cambiosDePropietarioRestantes;
   int _tiempoDeJuegoRestante;
 
-  // Constructor privado [cite: 65]
   Licencia._(this.id, this.idVideojuego, this.tipo,
       this._cambiosDePropietarioRestantes, this._tiempoDeJuegoRestante);
 
-  // --- FACTORIES (Cumplen con los puntos 3 y 23 del enunciado) ---
 
   factory Licencia.compra(String idVideojuego) {
     return Licencia._(
         _generarIdAleatorio(),
         idVideojuego,
         TipoLicencia.compra,
-        3, // Empieza en 3 cambios [cite: 22]
-        -1 // Tiempo infinito
+        3,
+        -1
     );
   }
 
@@ -32,8 +29,8 @@ class Licencia {
         _generarIdAleatorio(),
         idVideojuego,
         TipoLicencia.alquiler,
-        0, // 0 cambios [cite: 22]
-        -1 // Tiempo infinito
+        0,
+        -1
     );
   }
 
@@ -42,14 +39,12 @@ class Licencia {
         _generarIdAleatorio(),
         idVideojuego,
         TipoLicencia.prueba,
-        0, // 0 cambios [cite: 22]
-        3  // Límite de 3 horas
+        0,
+        3
     );
   }
 
-  // --- MÉTODOS ---
 
-  // Se resta 1h cada vez que se cierra el juego [cite: 25]
   void restarTiempoJugado() {
     if (_tiempoDeJuegoRestante > 0) {
       _tiempoDeJuegoRestante--;
@@ -64,8 +59,8 @@ class Licencia {
     return false;
   }
 
-  // Generador aleatorio de 10 caracteres
-  static String _generarIdAleatorio() {
+
+  static String _generarIdAleatorio() {  //Hacer el check para ver que no se repitan licencias
     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
     Random rnd = Random();
     return String.fromCharCodes(Iterable.generate(

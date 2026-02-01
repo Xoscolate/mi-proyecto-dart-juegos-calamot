@@ -11,14 +11,12 @@ import '../utils/askData.dart';
 
 
 
-class Puntuacionvista {
-  static void HighScoresVista(ControladorModeloVista controlador){
-      var listaPuntos = controlador.obtenerDatosPuntuaciones();
-      String nombreJuego = controlador.juegoActivo!.nombre;
-      askData.mostrarMensaje("PUNTACIONES TOP 10 DE ${nombreJuego}");
-      for(var i in listaPuntos){
-        askData.mostrarMensaje("${i.key}: ${i.value}");
+class Crearpuntuacionvista {
+  static void CrearPuntuacion(ControladorModeloVista controlador) {
 
-      }
-    }
+  var puntuacion = askData.pedirString("Cual ha sido tu puntuación: ");
+  controlador.registrarPuntuacioPartida(puntuacion);
+  askData.mostrarMensaje("Puntuacion registrada");
+
+  }
 }

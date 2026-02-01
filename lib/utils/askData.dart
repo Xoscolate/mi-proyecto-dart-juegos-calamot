@@ -1,8 +1,12 @@
 import 'dart:io';
+
+
 extension EmailValidator on String {
   bool isValidEmail() {
-    final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-    return emailRegExp.hasMatch(this); // 'this' es el String que estamos comprobando
+
+    final emailValidaciones = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'); // esto lo he mirado por internet pero sirve para comprobar el formato del mail
+    //utilizo final porque no quiero cambios en la validacion (buenas practicas).
+    return emailValidaciones.hasMatch(this);
   }
 }
 

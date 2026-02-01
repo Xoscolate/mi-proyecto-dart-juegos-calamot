@@ -13,7 +13,7 @@ abstract class Videojuego<T> { // Se añade <T> aquí
     _puntuacions[email] = puntuacio;
   }
 
-  Map<String, T> get puntuacions => _puntuacions;
+  void printHighscores();
 
   String mostrarHighscores();
   String Reto();
