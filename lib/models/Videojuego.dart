@@ -39,16 +39,13 @@ sealed class Videojuego<T> { // Restringimos T a números (int/double)
 class JuegoPuntos extends Videojuego<int> {
   JuegoPuntos(super.nombre, super.codigo, super.estilo, super.precioCompra, super.precioAlquiler);
 
-  // 2. ¡AQUÍ ESTÁ LA SOLUCIÓN! Tienes que implementar el método
   @override
   bool mejorPuntuacion(int nueva, int actual) {
-    // En juegos de puntos, queremos que la nueva sea SUPERIOR a la actual
     return nueva > actual;
   }
 
   @override
   List<MapEntry<String, int>> obtenerDatosHighscores() {
-    // ... tu lógica de ordenación
     var lista = puntuacions.entries.toList();
     lista.sort((a, b) => b.value.compareTo(a.value));
     return lista.take(10).toList();
@@ -56,4 +53,22 @@ class JuegoPuntos extends Videojuego<int> {
 
   @override
   String Reto() => "¡Supera los 5000 puntos!";
+}
+
+class JuegoCooperativo extends Videojuego<int> {
+  JuegoCooperativo(super.nombre, super.codigo, super.estilo, super.precioCompra, super.precioAlquiler);
+
+  @override
+  bool mejorPuntuacion(int nueva, int actual) => nueva > actual;
+
+  @override
+  List<MapEntry<String, int>> obtenerDatosHighscores() {
+    var lista = puntuacions.entries.toList();
+    // Ordenamos de mayor a menor puntuación de equipo
+    lista.sort((a, b) => b.value.compareTo(a.value));
+    return lista.take(10).toList();
+  }
+
+  @override
+  String Reto() => "Formeu un equip i supereu el rècord del grup dominant!";
 }

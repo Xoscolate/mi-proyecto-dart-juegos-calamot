@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:dart_juegos_calamot/utils/calamotException.dart';
+
 
 extension EmailValidator on String {
   bool isValidEmail() {
@@ -12,6 +14,16 @@ extension EmailValidator on String {
 
 
 class askData {
+  static int pedirInt(String etiqueta) {
+    String entrada = pedirString(etiqueta);
+    int? valor = int.tryParse(entrada);
+
+    if (valor == null) {
+      throw CalamotException("Has de introducir un número entero válido.");
+    }
+
+    return valor;
+  }
 
   static String pedirString(String etiqueta) {
     stdout.write("$etiqueta: ");

@@ -4,6 +4,7 @@ import 'package:dart_juegos_calamot/viewmodels/ControladorModeloVista.dart';
 import 'package:dart_juegos_calamot/utils/askData.dart';
 import 'package:dart_juegos_calamot/views/A%C3%B1adirAmigos.dart';
 import 'package:dart_juegos_calamot/views/ComprarJuegoVista.dart';
+import 'package:dart_juegos_calamot/views/CrearGrupoVista.dart';
 import 'package:dart_juegos_calamot/views/DarJuego.dart';
 import 'package:dart_juegos_calamot/views/ListarAmigos.dart';
 import 'package:dart_juegos_calamot/views/LoginVista.dart';
@@ -22,9 +23,11 @@ void main(List<String> arguments) {
   final controlador = ControladorModeloVista();
   bool salir = false;
   bool juego = false;
+  controlador.inicializarUsuariosPrueba();
 
   while (!salir) {
     if (controlador.usuarioCorrecto == null) {
+      controlador.inicializarTienda();
       String opcion = askData.pedirString("[E] Entrar | [R] Registrar | [S] Sortir").toUpperCase();
       if (opcion == "E") {
         LoginVista.mostrarMenuLogin(controlador);
@@ -78,6 +81,7 @@ void main(List<String> arguments) {
         if(opcion == "H"){
         Puntuacionvista.HighScoresVista(controlador);
         }else if (opcion == "G"){
+          Creargrupovista.CrearGrupo(controlador);
 
         }else if (opcion == "P"){
         Crearpuntuacionvista.CrearPuntuacion(controlador);
@@ -85,6 +89,8 @@ void main(List<String> arguments) {
         }else if (opcion == "E"){
           controlador.usuarioCorrecto = null;
           controlador.juegoActivo = null;
+          controlador.grupoActual = [];
+          controlador.nombreGrupoActual = null;
           juego = false;
           askData.mostrarMensaje("Sessió tancada.");
         }else if (opcion == "T"){

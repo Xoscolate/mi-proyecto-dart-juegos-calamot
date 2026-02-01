@@ -15,10 +15,16 @@ class Puntuacionvista {
   static void HighScoresVista(ControladorModeloVista controlador){
       var listaPuntos = controlador.obtenerDatosPuntuaciones();
       String nombreJuego = controlador.juegoActivo!.nombre;
+      if (controlador.juegoActivo is JuegoPuntos){
       askData.mostrarMensaje("PUNTACIONES TOP 10 DE ${nombreJuego}");
-      for(var i in listaPuntos){
+      for(var i in listaPuntos) {
         askData.mostrarMensaje("${i.key}: ${i.value}");
-
+      }
+      }else if(controlador.juegoActivo is JuegoCooperativo){
+        askData.mostrarMensaje("PUNTACIONES TOP 10 DE ${nombreJuego} (SUS EQUIPOS):");
+        for(var i in listaPuntos) {
+          askData.mostrarMensaje("${i.key}: ${i.value}");
+        }
       }
     }
 }

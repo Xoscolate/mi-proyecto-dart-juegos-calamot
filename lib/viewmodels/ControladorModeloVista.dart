@@ -1,3 +1,4 @@
+import 'package:dart_juegos_calamot/views/CrearGrupoVista.dart';
 import 'package:dart_juegos_calamot/views/DarJuego.dart';
 
 import '../models/Jugador.dart';
@@ -19,7 +20,8 @@ class ControladorModeloVista {
   Videojuego? juegoActivo;// Este es para saber a que juego se esta jugando
   Licencia? licenciaActiva;
   List<Licencia> get licencias => usuarioCorrecto!.licencias;
-
+  String? nombreGrupoActual;
+  List<Jugador> grupoActual = [];
 
   void entrar(String emailIntroducido, String contrasena) {
     Jugador? encontrado;
@@ -41,6 +43,7 @@ class ControladorModeloVista {
       throw CalamotException("El format de l'email '$email' no és vàlid.");
     }
   }
+
 
   void registrar(String email, String nick, String contrasena,) {
     verificarFormatoEmail(email);
@@ -72,7 +75,30 @@ class ControladorModeloVista {
   void inicializarTienda() {
     if (_juegos.isEmpty) {
       _juegos.add(JuegoPuntos("Doom Eternal","doom",Estilo.shooter,39.99,4.99));
+      _juegos.add(JuegoCooperativo("Hell Divers","hd",Estilo.shooter,59.99,4.99));
 
+
+    }
+  }
+  void inicializarUsuariosPrueba() {
+    if (_jugadores.isEmpty) {
+      _jugadores.add(Jugador(
+        nick: "o",
+        email: "o@gmail.com",
+        contrasena: "o",
+      ));
+
+      _jugadores.add(Jugador(
+        nick: "a",
+        email: "a@gmail.com",
+        contrasena: "a",
+      ));
+
+      _jugadores.add(Jugador(
+        nick: "e",
+        email: "e@gmail.com",
+        contrasena: "e",
+      ));
     }
   }
 
@@ -171,6 +197,19 @@ class ControladorModeloVista {
       throw CalamotException("ERROR esta puntuacion no es correcta en este juego de puntos");
     }
     juegoActivo!.puntuar(usuarioCorrecto!.email, puntos);
+  }
+  void registrarPuntuacioPartidaCoperativo(String puntuacionString) {
+    if (usuarioCorrecto == null) {
+      throw CalamotException("Has d'estar loguejat per puntuar.");
+    }
+    if (juegoActivo == null) {
+      throw CalamotException("No hi ha cap joc seleccionat per rebre punts.");
+    }
+    int? puntos = int.tryParse(puntuacionString);
+    if (puntos == null) {
+      throw CalamotException("ERROR esta puntuacion no es correcta en este juego de puntos");
+    }
+    juegoActivo!.puntuar(nombreGrupoActual!, puntos);
   }
 
 
@@ -367,6 +406,108 @@ class ControladorModeloVista {
       throw CalamotException("No exsiste ese amigo");
     }
     }
+
+  void existeJugador(String emailBuscar) {
+    bool existe = false;
+
+    for (var j in _jugadores) {
+      if (j.email == emailBuscar) {
+        existe = true;
+        break;
+      }
+    }
+
+    if (!existe) {
+      throw CalamotException("No existe ese jugador en el sistema.");
+    }
+  }
+
+    bool puedeCrearGrupo(){
+    bool cooperativo = false;
+    if(juegoActivo is JuegoCooperativo){
+      cooperativo = true;
+    }else{
+      throw CalamotException("Lo siento este juego no es cooperativo");
+    }
+    return cooperativo;
+    }
+
+    void hayEspacioEnElGrupo(){
+    if(grupoActual!.length >= 4){
+      throw CalamotException("Lo siento los grupos no pueden ser mayor a 4");
+    }
+    }
+
+
+
+    void hayJugadoresEnElSistema(String idVideojuego){
+    int hayJugadores = 0;
+      for (var j in _jugadores){
+        for(var l in j.licencias){
+          if(l.idVideojuego == idVideojuego){
+            hayJugadores++;
+          }
+        }
+      }
+      if(hayJugadores <= 1){
+        throw CalamotException("No hay mas jugadores en el sistema con ese juego excepto tu");
+      }
+
+    }
+
+    void mostrarJugadoresConEseJuego(String idVideojuego, ControladorModeloVista controlador) {
+      for (var j in _jugadores) {
+        for (var l in j.licencias) {
+          if (l.idVideojuego == idVideojuego) {
+
+            Creargrupovista.mostrarJugadores(j, controlador);
+          }
+        }
+      }
+    }
+
+    void unoODos(String numero){
+      if (numero != "1" && numero != "2" && numero != "3") {
+        throw CalamotException("No exsiste esa opcion");
+    }
+    }
+
+  void anadirJugadorGrupo(String email) {
+    for (var j in _jugadores) {
+      if (j.email == email) {
+        grupoActual.add(j);
+      }
+    }
+
+    bool yaEstoy = false;
+    for (var j in grupoActual) {
+      if (j.email == usuarioCorrecto!.email) {
+        yaEstoy = true;
+      }
+    }
+
+    if (yaEstoy == false) {
+      grupoActual.add(usuarioCorrecto!);
+    }
+  }
+
+    void anadirNombreGrupo (String nombre){
+      nombreGrupoActual = nombre;
+    }
+
+
+
+
+
+void yaEstaEnGrupo (String email){
+  for(var j in grupoActual ){
+    if(j.email == email){
+      throw CalamotException("Ese jugador ya esta en el grupo");
+    }
+  }
+}
+
+
 
 
 
