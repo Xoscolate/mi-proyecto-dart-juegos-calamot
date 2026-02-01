@@ -87,6 +87,7 @@ void main(List<String> arguments) {
         Crearpuntuacionvista.CrearPuntuacion(controlador);
 
         }else if (opcion == "E"){
+          controlador.finalizarSesionJuego();
           controlador.usuarioCorrecto = null;
           controlador.juegoActivo = null;
           controlador.grupoActual = [];

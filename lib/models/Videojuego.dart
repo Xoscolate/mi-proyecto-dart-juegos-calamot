@@ -72,3 +72,62 @@ class JuegoCooperativo extends Videojuego<int> {
   @override
   String Reto() => "Formeu un equip i supereu el rècord del grup dominant!";
 }
+
+class JuegoSpeedRun extends Videojuego<Duration> {
+  JuegoSpeedRun(super.nombre, super.codigo, super.estilo, super.precioCompra, super.precioAlquiler);
+
+  @override
+  bool mejorPuntuacion(Duration nueva, Duration actual) {
+    return nueva < actual;
+  }
+
+  @override
+  List<MapEntry<String, Duration>> obtenerDatosHighscores() {
+    var lista = puntuacions.entries.toList();
+    lista.sort((a, b) => a.value.compareTo(b.value));
+    return lista.take(10).toList();
+  }
+
+  @override
+  String Reto() => "Acaba el nivell en el menor temps possible!";
+}
+
+class JuegoVictoriesDerrotes extends Videojuego<List<bool>> {
+  JuegoVictoriesDerrotes(super.nombre, super.codigo, super.estilo, super.precioCompra, super.precioAlquiler);
+
+  @override
+  bool mejorPuntuacion(List<bool> nueva, List<bool> actual) {
+    return true;
+  }
+
+  @override
+  List<MapEntry<String, List<bool>>> obtenerDatosHighscores() {
+    var lista = puntuacions.entries.toList();
+
+    lista.sort((a, b) {
+      // 1. Calculamos porcentajes
+      double winRateA = _calcularPorcentaje(a.value);
+      double winRateB = _calcularPorcentaje(b.value);
+
+      if (winRateA != winRateB) {
+        return winRateB.compareTo(winRateA); // Mayor porcentaje arriba
+      }
+
+      // 2. Empate: Quien tenga más victorias totales
+      int victoriasA = a.value.where((v) => v == true).length;
+      int victoriasB = b.value.where((v) => v == true).length;
+      return victoriasB.compareTo(victoriasA);
+    });
+
+    return lista.take(10).toList();
+  }
+
+  double _calcularPorcentaje(List<bool> partida) {
+    if (partida.isEmpty) return 0.0;
+    int victorias = partida.where((v) => v == true).length;
+    return (victorias / partida.length) * 100;
+  }
+
+  @override
+  String Reto() => "Guanya tantes partides com puguis per dominar el rànquing!";
+}

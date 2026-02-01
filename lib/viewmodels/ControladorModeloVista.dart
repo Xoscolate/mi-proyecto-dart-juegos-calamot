@@ -8,7 +8,6 @@ import 'package:dart_juegos_calamot/utils/askData.dart';
 import 'package:dart_juegos_calamot/utils/calamotException.dart';
 import 'package:dart_juegos_calamot/models/Estilo.dart';
 import 'package:dart_juegos_calamot/models/Licencia.dart';
-import 'package:dart_juegos_calamot/models/TiposLicencia.dart';
 import 'package:dart_juegos_calamot/views/DarJuego.dart';
 import 'package:dart_juegos_calamot/views/ListarAmigos.dart';
 
@@ -76,8 +75,32 @@ class ControladorModeloVista {
     if (_juegos.isEmpty) {
       _juegos.add(JuegoPuntos("Doom Eternal","doom",Estilo.shooter,39.99,4.99));
       _juegos.add(JuegoCooperativo("Hell Divers","hd",Estilo.shooter,59.99,4.99));
+      _juegos.add(JuegoSpeedRun("Sonic Mania","sonic",Estilo.plataformes,39.99,4.99));
+      _juegos.add(JuegoVictoriesDerrotes("Street Fighter","st",Estilo.simulacio,59.99,4.99));
 
 
+    }
+  }
+
+  void finalizarSesionJuego() {
+    if (usuarioCorrecto != null && juegoActivo != null) {
+
+      // 1. Buscamos la licencia del juego que se estaba jugando
+      for (var i = 0; i < usuarioCorrecto!.licencias.length; i++) {
+        var lic = usuarioCorrecto!.licencias[i];
+
+        if (lic.idVideojuego == juegoActivo!.codigo) {
+
+          if (lic.tipo == TipoLicencia.prueba ) {
+            lic.restarTiempoJugado();
+            
+            if (lic.tiempoRestante == 0) {
+              usuarioCorrecto!.licencias.removeAt(i);
+              askData.mostrarMensaje("¡Atención! La demo de ${juegoActivo!.nombre} ha finalizado y se ha eliminado de tu biblioteca.");
+            }
+          }
+        }
+      }
     }
   }
   void inicializarUsuariosPrueba() {
@@ -186,17 +209,28 @@ class ControladorModeloVista {
     }
 
   void registrarPuntuacioPartida(String puntuacionString) {
-    if (usuarioCorrecto == null) {
-      throw CalamotException("Has d'estar loguejat per puntuar.");
+    if (juegoActivo is JuegoPuntos) {
+      int? puntos = int.tryParse(puntuacionString);
+      if (puntos == null) throw CalamotException("La puntuación debe ser un número");
+
+      juegoActivo!.puntuar(usuarioCorrecto!.email, puntos);
     }
-    if (juegoActivo == null) {
-      throw CalamotException("No hi ha cap joc seleccionat per rebre punts.");
+
+    if (juegoActivo is JuegoSpeedRun) {
+      int? segundos = int.tryParse(puntuacionString);
+      if (segundos == null) throw CalamotException("Los segundos deben ser un número");
+
+      juegoActivo!.puntuar(usuarioCorrecto!.email, Duration(seconds: segundos));
     }
-    int? puntos = int.tryParse(puntuacionString);
-    if (puntos == null) {
-      throw CalamotException("ERROR esta puntuacion no es correcta en este juego de puntos");
+
+    if (juegoActivo is JuegoVictoriesDerrotes) {
+      bool victoria = puntuacionString == "S";
+      List<bool> lista = (juegoActivo as JuegoVictoriesDerrotes)
+          .puntuacions[usuarioCorrecto!.email] ?? [];
+
+      lista.add(victoria);
+      juegoActivo!.puntuar(usuarioCorrecto!.email, lista);
     }
-    juegoActivo!.puntuar(usuarioCorrecto!.email, puntos);
   }
   void registrarPuntuacioPartidaCoperativo(String puntuacionString) {
     if (usuarioCorrecto == null) {

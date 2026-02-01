@@ -34,4 +34,17 @@ class Crearpuntuacionvista {
   askData.mostrarMensaje("Puntuacion registrada");
 
   }
+    if (controlador.juegoActivo is JuegoSpeedRun) {
+      int segundos = askData.pedirInt("¿Cuántos segundos has tardado?");
+      controlador.registrarPuntuacioPartida(segundos.toString());
+      askData.mostrarMensaje("Tiempo registrado");
+    }
+
+    if (controlador.juegoActivo is JuegoVictoriesDerrotes) {
+      String resultado = askData.pedirString("¿Has ganado la partida? (S/N)").toUpperCase();
+      controlador.registrarPuntuacioPartida(resultado);
+      askData.mostrarMensaje("Resultado registrado");
+    }
+
+
 }}
