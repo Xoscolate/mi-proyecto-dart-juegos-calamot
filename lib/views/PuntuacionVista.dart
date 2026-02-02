@@ -20,6 +20,7 @@ class Puntuacionvista {
       for (var i in listaPuntos) {
         askData.mostrarMensaje("${i.key}: ${i.value}");
       }
+    }
       if (controlador.juegoActivo is JuegoCooperativo) {
         askData.mostrarMensaje(
             "PUNTACIONES TOP 10 DE ${nombreJuego} (SUS EQUIPOS):");
@@ -48,6 +49,6 @@ class Puntuacionvista {
             askData.mostrarMensaje("${i.key}: $porcentaje% de victorias ($totalVictorias en total)");
           }
         }
-    }
+
   }
 }

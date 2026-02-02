@@ -17,12 +17,12 @@ class ControladorModeloVista {
   List<Videojuego<dynamic>> get  todosLosJuegos => _juegos; // lo utilizo como forma simple de ver todos los juegos en tienda
   Jugador? usuarioCorrecto; // esto comienza nulo pero con la funcion entrar le asigno si es correcto
   Videojuego? juegoActivo;// Este es para saber a que juego se esta jugando
-  Licencia? licenciaActiva;
-  List<Licencia> get licencias => usuarioCorrecto!.licencias;
-  String? nombreGrupoActual;
-  List<Jugador> grupoActual = [];
+  Licencia? licenciaActiva; //Esto para saber que licencia esta activa
+  List<Licencia> get licencias => usuarioCorrecto!.licencias; //Para mirar las licencias del usuario activo
+  String? nombreGrupoActual; //Lo utilizo para guardar el nombre del grupo en el que esta el usuario actualmente
+  List<Jugador> grupoActual = []; //Es la lista de jugadores del grupo activo
 
-  void entrar(String emailIntroducido, String contrasena) {
+  void entrar(String emailIntroducido, String contrasena) { // Metodo para entrar al programa con el mail y contraseñas
     Jugador? encontrado;
     for (var jugador in _jugadores) {
       if (jugador.email == emailIntroducido &&
@@ -37,14 +37,15 @@ class ControladorModeloVista {
     }
   }
 
-  void verificarFormatoEmail(String email) {
+  void verificarFormatoEmail(String email) { // pequeño metodo que entra al askData y valida para el registrar
     if (!email.isValidEmail()) {
       throw CalamotException("El format de l'email '$email' no és vàlid.");
     }
   }
 
 
-  void registrar(String email, String nick, String contrasena,) {
+  void registrar(String email, String nick, String contrasena,) { //Pedimos al usuario esos datos y creamos al usuario y lo
+    //guardamos en la lista de _jugadores
     verificarFormatoEmail(email);
     emailExsiste(email);
       Jugador nuevoJugador = Jugador(
@@ -57,7 +58,7 @@ class ControladorModeloVista {
     }
 
 
-  void emailExsiste (String email){
+  void emailExsiste (String email){ //Miramos si ese mail ya esta en el programa
     bool yaExiste = false;
     for (var j in _jugadores) {
       if (j.email == email) {
@@ -71,7 +72,7 @@ class ControladorModeloVista {
 
 
 
-  void inicializarTienda() {
+  void inicializarTienda() { //Es para que la tienda tenga juegos
     if (_juegos.isEmpty) {
       _juegos.add(JuegoPuntos("Doom Eternal","doom",Estilo.shooter,39.99,4.99));
       _juegos.add(JuegoCooperativo("Hell Divers","hd",Estilo.shooter,59.99,4.99));
@@ -82,10 +83,10 @@ class ControladorModeloVista {
     }
   }
 
-  void finalizarSesionJuego() {
+  void finalizarSesionJuego() { //Lo utilizo para que vaya comprobando si los usos se han acabado y si es asi pues te lo elimina de tu biblioteca
+    //lista de licencias.
     if (usuarioCorrecto != null && juegoActivo != null) {
 
-      // 1. Buscamos la licencia del juego que se estaba jugando
       for (var i = 0; i < usuarioCorrecto!.licencias.length; i++) {
         var lic = usuarioCorrecto!.licencias[i];
 
@@ -93,7 +94,7 @@ class ControladorModeloVista {
 
           if (lic.tipo == TipoLicencia.prueba ) {
             lic.restarTiempoJugado();
-            
+
             if (lic.tiempoRestante == 0) {
               usuarioCorrecto!.licencias.removeAt(i);
               askData.mostrarMensaje("¡Atención! La demo de ${juegoActivo!.nombre} ha finalizado y se ha eliminado de tu biblioteca.");
@@ -103,7 +104,7 @@ class ControladorModeloVista {
       }
     }
   }
-  void inicializarUsuariosPrueba() {
+  void inicializarUsuariosPrueba() { // ESTO SE ELIMINARA
     if (_jugadores.isEmpty) {
       _jugadores.add(Jugador(
         nick: "o",
@@ -125,7 +126,7 @@ class ControladorModeloVista {
     }
   }
 
-  bool exsisteId(String id){
+  bool exsisteId(String id){ //metodo booleano para ver si esa id exsiste (doom, hd...)
     for (var j in _juegos) {
       if (j.codigo == id){
         return true;
@@ -134,7 +135,7 @@ class ControladorModeloVista {
     return false;
     }
 
-  void adquirirLicencia(String tipo, ControladorModeloVista controlador, String id){
+  void adquirirLicencia(String tipo, ControladorModeloVista controlador, String id){ //Creo la licencia y asi se te asigna de ese juego
     Licencia licencia; //inicializo la licencia (internamente genera todo)
     if(!exsisteId(id)){
       throw CalamotException("No exsiste ese juego en nuestra tienda");
@@ -159,7 +160,7 @@ class ControladorModeloVista {
 
   }
 
-  bool amigoExsiste (String email){
+  bool amigoExsiste (String email){ //metodo para comprobar ese mail
     for (var j in _jugadores) {
       if(email == j.email){
         return true;
@@ -168,7 +169,8 @@ class ControladorModeloVista {
     return false;
 
     }
-  void tienesLicencia(String licencia) {
+  void tienesLicencia(String licencia) { //metodo para ver si esa licencia ya la tienes adquirida ( es para
+    //comprobar si tienes ese juego en tu biblioteca).
     bool yaLoTiene = false;
 
     for (var l in usuarioCorrecto!.licencias) {
@@ -183,7 +185,7 @@ class ControladorModeloVista {
     }
   }
 
-  void activarJuego(String licencia){
+  void activarJuego(String licencia){ //Para entrar a un juego, se necesita poner su licencia
     juegoActivo = null;
     licenciaActiva = null;
     for(var l in licencias){
@@ -208,7 +210,9 @@ class ControladorModeloVista {
 
     }
 
-  void registrarPuntuacioPartida(String puntuacionString) {
+  void registrarPuntuacioPartida(String puntuacionString) { //Este metodo es para el registro de puntos
+    //de cada juego, cada juego se comporta de una manera distinta (puntos de mayor a menor, speedrun de menor a mayor
+    //victorias derrotas muestra porcentaje y de mayor a menor, colaborativa de mayor a menor por grupos
     if (juegoActivo is JuegoPuntos) {
       int? puntos = int.tryParse(puntuacionString);
       if (puntos == null) throw CalamotException("La puntuación debe ser un número");
@@ -259,7 +263,8 @@ class ControladorModeloVista {
 
 
 
-  void tienesJuego(String idJuego) {
+  void tienesJuego(String idJuego) { //Comprobacion de si tienes el juego, aqui no miro la id de la licencia sino
+    //la id del juego (no se pueden repetir el mismo tipo juego)
     bool yaLoTiene = false;
 
     for (var l in usuarioCorrecto!.licencias) {
@@ -272,7 +277,7 @@ class ControladorModeloVista {
       throw CalamotException("Ya tienes este juego en tu biblioteca");
     }
   }
-    void anadirAmigo (String email){
+  void anadirAmigo (String email){ // Metodo para añadir amigo
     if (usuarioCorrecto == null) {
       throw CalamotException("usuario inexsisitente");
     }
@@ -286,7 +291,7 @@ class ControladorModeloVista {
     usuarioCorrecto!.amigos.add(email);
     for(var j in _jugadores){
       if (j.email == email){
-        j.amigos.add(email);
+        j.amigos.add(usuarioCorrecto!.email);
       }
     }
   }
@@ -294,7 +299,7 @@ class ControladorModeloVista {
 
 
 
-  List<Videojuego<dynamic>> obtenerJuegosFiltrados(String filtro) {
+  List<Videojuego<dynamic>> obtenerJuegosFiltrados(String filtro) { //Esto es para mirar en la tienda los juegos filtrados
     List<Videojuego<dynamic>> listaFiltrada = []; // esta es la lista de lo que le pedimos
     for (var juego in _juegos) {
       String estiloDelJuego = juego.estilo.name.toLowerCase();
@@ -305,13 +310,9 @@ class ControladorModeloVista {
     return listaFiltrada;
     }
 
-    void darJuego(String idLicencia, String emailAmigo){
-      if (usuarioCorrecto == null) {
-        throw CalamotException("usuario inexsisitente");
-      }
-    }
 
-    void validacionCambios (String idLicenciaADonar, String emailDestinatario){
+    void validacionCambios (String idLicenciaADonar, String emailDestinatario){ //Metodo que se utiliza para cambiar
+    // de licencia de un usuario a otro, comprueba los cambios restantes para que los de alquiler no se pasen o demos
       Licencia? licEncontrada;
       for (var lic in usuarioCorrecto!.licencias) {
         if (lic.id == idLicenciaADonar) {
@@ -327,7 +328,7 @@ class ControladorModeloVista {
         throw CalamotException("Esta licencia no se puede dar a un amigo.");
       }
     }
-  void ejecutarTraspaso(String idLicencia, String emailAmigo) {
+  void ejecutarTraspaso(String idLicencia, String emailAmigo) { //Se ejecuta despues de mirar la validacion de cambios
     String idBuscado = idLicencia.trim();
     String emailBuscado = emailAmigo.trim().toLowerCase();
     Licencia? licenciaParaMover;
@@ -361,7 +362,8 @@ class ControladorModeloVista {
 
 
 
-  void amigoTieneEseJuego(String idLicencia, String amigo) {
+  void amigoTieneEseJuego(String idLicencia, String amigo) { //Comrpueba si tu amigo tiene ese juego, no la misma licencia
+    //sino que comrpueba el id del videojuego
     bool loTiene = false;
     String codigo = "";
     for (var lic in usuarioCorrecto!.licencias) {
@@ -369,7 +371,7 @@ class ControladorModeloVista {
         codigo = lic.idVideojuego;
       }
     }
-    Jugador? receptor;
+    Jugador? receptor; // Esto es para guardar al amigo y entrar a sus licencias
     for (var jug in _jugadores) {
       if (jug.email == amigo) {
         receptor = jug;
@@ -387,7 +389,7 @@ class ControladorModeloVista {
     }
   }
 
-  void amigosAgregados() {
+  void amigosAgregados() { //Simplemente mira los amigos que tienes en tu lista
     if (usuarioCorrecto?.amigos.isEmpty ?? true) {
       throw CalamotException("Ahora mismo no tienes amigos");
     }
@@ -416,7 +418,7 @@ class ControladorModeloVista {
     }
     }
 
-  void juegosQueTienes() {
+  void juegosQueTienes() { //Mira las licencias que tiene el usuario activo
     if (usuarioCorrecto?.licencias.isEmpty ?? true) {
       throw CalamotException("Ahora mismo no tienes licencias");
     }
@@ -456,7 +458,7 @@ class ControladorModeloVista {
     }
   }
 
-    bool puedeCrearGrupo(){
+    bool puedeCrearGrupo(){ //Este metodo lo cree porque si el juego no es cooperativo no deberias poder crear un juego
     bool cooperativo = false;
     if(juegoActivo is JuegoCooperativo){
       cooperativo = true;
@@ -466,7 +468,7 @@ class ControladorModeloVista {
     return cooperativo;
     }
 
-    void hayEspacioEnElGrupo(){
+    void hayEspacioEnElGrupo(){ // He hecho que los juegos no puedan ser mayor a 4 (tipico de los juegos).
     if(grupoActual!.length >= 4){
       throw CalamotException("Lo siento los grupos no pueden ser mayor a 4");
     }
@@ -474,7 +476,8 @@ class ControladorModeloVista {
 
 
 
-    void hayJugadoresEnElSistema(String idVideojuego){
+    void hayJugadoresEnElSistema(String idVideojuego){ //Miramos si hay jugadores con ese juego, porque si no hay nadie
+    //con ese juego no puedes crear un grupo para ese juego
     int hayJugadores = 0;
       for (var j in _jugadores){
         for(var l in j.licencias){
@@ -489,7 +492,8 @@ class ControladorModeloVista {
 
     }
 
-    void mostrarJugadoresConEseJuego(String idVideojuego, ControladorModeloVista controlador) {
+    void mostrarJugadoresConEseJuego(String idVideojuego, ControladorModeloVista controlador) { //Recorre los jugadores
+    //con ese juego especifico para enseñartelos
       for (var j in _jugadores) {
         for (var l in j.licencias) {
           if (l.idVideojuego == idVideojuego) {
@@ -500,13 +504,13 @@ class ControladorModeloVista {
       }
     }
 
-    void unoODos(String numero){
+    void unoODos(String numero){ //Solamente comprueba que sea una de esas opciones
       if (numero != "1" && numero != "2" && numero != "3") {
         throw CalamotException("No exsiste esa opcion");
     }
     }
 
-  void anadirJugadorGrupo(String email) {
+  void anadirJugadorGrupo(String email) { // Despues de las comprobaciones añado al jugador al grupo
     for (var j in _jugadores) {
       if (j.email == email) {
         grupoActual.add(j);
@@ -540,12 +544,5 @@ void yaEstaEnGrupo (String email){
     }
   }
 }
-
-
-
-
-
-
-
 }
 

@@ -42,8 +42,12 @@ class Crearpuntuacionvista {
 
     if (controlador.juegoActivo is JuegoVictoriesDerrotes) {
       String resultado = askData.pedirString("¿Has ganado la partida? (S/N)").toUpperCase();
-      controlador.registrarPuntuacioPartida(resultado);
-      askData.mostrarMensaje("Resultado registrado");
+      if (resultado == "S" || resultado == "N") {
+        controlador.registrarPuntuacioPartida(resultado);
+        askData.mostrarMensaje("Resultado registrado");
+      } else {
+        throw CalamotException("Error: Solo puedes poner S o N");
+      }
     }
 
 

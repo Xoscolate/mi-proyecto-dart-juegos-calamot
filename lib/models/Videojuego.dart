@@ -1,7 +1,7 @@
 import 'Estilo.dart';
 import 'package:dart_juegos_calamot/utils/calamotException.dart';
 
-sealed class Videojuego<T> { // Restringimos T a números (int/double)
+sealed class Videojuego<T> { // Restringimos T a números (int/double), la sealed class para hacer la clase cerrada
   final String nombre;
   final String codigo;
   final Estilo estilo;
@@ -48,7 +48,7 @@ class JuegoPuntos extends Videojuego<int> {
   List<MapEntry<String, int>> obtenerDatosHighscores() {
     var lista = puntuacions.entries.toList();
     lista.sort((a, b) => b.value.compareTo(a.value));
-    return lista.take(10).toList();
+    return lista.take(10).toList(); //El take (10) es para que solo coga los 10 primero de la lista
   }
 
   @override
@@ -84,7 +84,7 @@ class JuegoSpeedRun extends Videojuego<Duration> {
   @override
   List<MapEntry<String, Duration>> obtenerDatosHighscores() {
     var lista = puntuacions.entries.toList();
-    lista.sort((a, b) => a.value.compareTo(b.value));
+    lista.sort((a, b) => a.value.compareTo(b.value)); //Aqui la lista es de mayor a menor
     return lista.take(10).toList();
   }
 
@@ -122,7 +122,7 @@ class JuegoVictoriesDerrotes extends Videojuego<List<bool>> {
     return lista.take(10).toList();
   }
 
-  double _calcularPorcentaje(List<bool> partida) {
+  double _calcularPorcentaje(List<bool> partida) { //Con este metodo devuelvo el porcentaje con el formato double
     if (partida.isEmpty) return 0.0;
     int victorias = partida.where((v) => v == true).length;
     return (victorias / partida.length) * 100;
