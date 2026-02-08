@@ -21,6 +21,7 @@ class ControladorModeloVista {
   List<Licencia> get licencias => usuarioCorrecto!.licencias; //Para mirar las licencias del usuario activo
   String? nombreGrupoActual; //Lo utilizo para guardar el nombre del grupo en el que esta el usuario actualmente
   List<Jugador> grupoActual = []; //Es la lista de jugadores del grupo activo
+  Map<String, List<Jugador>> gruposGlobales = {};
 
   void entrar(String emailIntroducido, String contrasena) { // Metodo para entrar al programa con el mail y contraseñas
     Jugador? encontrado;
@@ -544,5 +545,70 @@ void yaEstaEnGrupo (String email){
     }
   }
 }
+
+  void recuperarGrupoDelSistema() {
+    if (usuarioCorrecto != null && grupoActual.isEmpty) {
+
+      for (var nombre in gruposGlobales.keys) {
+        List<Jugador> lista = gruposGlobales[nombre]!;
+
+        for (var j in lista) {
+          if (j.email == usuarioCorrecto!.email) {
+            grupoActual = lista;
+            nombreGrupoActual = nombre;
+          }
+        }
+      }
+    }
+  }
+
+  void nombreGrupoDisponible(String nombre) {
+    if (gruposGlobales.containsKey(nombre)) {
+      throw CalamotException("Ese nombre de grupo ya existe, elige otro.");
+    }
+  }
+
+  void guardarGrupoEnSistema() {
+    if (nombreGrupoActual != null) {
+      gruposGlobales[nombreGrupoActual!] = List.from(grupoActual);
+    }
+  }
+
+  void salirDelGrupoOficial() {
+    if (nombreGrupoActual != null && gruposGlobales.containsKey(nombreGrupoActual)) {
+
+      List<Jugador> lista = gruposGlobales[nombreGrupoActual!]!;
+      Jugador? jugadorEncontrado;
+
+      for (var j in lista) {
+        if (j.email == usuarioCorrecto!.email) {
+          jugadorEncontrado = j;
+        }
+      }
+
+      if (jugadorEncontrado != null) {
+        lista.remove(jugadorEncontrado);
+      }
+
+      if (lista.isEmpty) {
+        gruposGlobales.remove(nombreGrupoActual);
+      }
+    }
+
+    grupoActual = [];
+    nombreGrupoActual = null;
+  }
+
+  void jugadorYaTieneGrupoEnSistema(String email) {
+    for (var nombre in gruposGlobales.keys) {
+      List<Jugador> lista = gruposGlobales[nombre]!;
+
+      for (var j in lista) {
+        if (j.email == email) {
+          throw CalamotException("El jugador con email $email ya está en el grupo: $nombre");
+        }
+      }
+    }
+  }
 }
 

@@ -72,7 +72,6 @@ void main(List<String> arguments) {
         askData.mostrarError(e.missatge);
       }
     }else if (controlador.usuarioCorrecto != null && juego){
-      askData.mostrarMensaje("HAS ENTRADO");
       askData.mostrarMensaje("\n--- HAS ENTRADO AL JUEGO ---");
       String opcion = askData.pedirString(
           "[H] Highscores | [G] Grup | [P] Puntuació | [E] Enrera | [T] Tancar App"

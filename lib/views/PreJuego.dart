@@ -15,7 +15,7 @@ class Prejuego {
   static bool preJuegoVista(ControladorModeloVista controlador){
     askData.mostrarMensaje("--- Juegos disponibles ---");
     controlador.juegosQueTienes();
-    String idJuego = askData.pedirString("Que juego quieres jugar (licencia): ");
+    String idJuego = askData.pedirString("Que juego quieres jugar (licencia)");
     controlador.tienesLicencia(idJuego);
     controlador.activarJuego(idJuego);
     return true;
