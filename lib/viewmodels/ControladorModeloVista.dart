@@ -22,6 +22,8 @@ class ControladorModeloVista {
   String? nombreGrupoActual; //Lo utilizo para guardar el nombre del grupo en el que esta el usuario actualmente
   List<Jugador> grupoActual = []; //Es la lista de jugadores del grupo activo
   Map<String, List<Jugador>> gruposGlobales = {};
+  bool salir = false;  // El interruptor para cerrar la app
+  bool juego = false; //Interruptor para salir del juego
 
   void entrar(String emailIntroducido, String contrasena) { // Metodo para entrar al programa con el mail y contraseñas
     Jugador? encontrado;
