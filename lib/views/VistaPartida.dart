@@ -24,7 +24,8 @@ import 'package:dart_juegos_calamot/views/CrearGrupoVista.dart';
 
 class VistaPartida {
   static void mostrar(ControladorModeloVista controlador) {
-    askData.mostrarMensaje("\n--- HAS ENTRADO AL JUEGO ---");
+    askData.mostrarMensaje("\n--- HAS ENTRADO AL JUEGO: ${controlador.juegoActivo!.nombre} ---");
+    askData.mostrarMensaje(">>> EL RETO: ${controlador.juegoActivo!.Reto()} <<<");
     String opcion = askData.pedirString(
         "[H] Highscores | [G] Grup | [P] Puntuació | [E] Enrera | [T] Tancar App"
     ).toUpperCase();

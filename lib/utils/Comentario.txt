@@ -1,0 +1,5 @@
+En el main gestionio las 3 vistas de menus que son VistaLogin/VistaMenuPrincipal/VistaPartida los 3 menus,
+luego en models pues obviamente tengo los modelos añadidos y videojuego es un sealed class con todos sus hijos añadidos
+Luego en utils tengo en el askData donde pido los strings y ints con comprobaciones, y el calamotException.
+En viewsmodels pues tengo el controlador con toda la logica de la aplicaicon
+Y en views tengo views para TODAS las opciones de la aplicacion
