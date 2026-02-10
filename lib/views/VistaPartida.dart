@@ -42,10 +42,10 @@ class VistaPartida {
         controlador.juegoActivo = null;
         controlador.grupoActual = [];
         controlador.nombreGrupoActual = null;
-        controlador.juego = false; // <--- Volvemos al menú principal
+        controlador.juego = false;
         askData.mostrarMensaje("Sessió tancada.");
       } else if (opcion == "T") {
-        controlador.salir = true; // <--- Cerramos la app desde el juego
+        controlador.salir = true;
       }
     } on CalamotException catch (e) {
       askData.mostrarError(e.missatge);

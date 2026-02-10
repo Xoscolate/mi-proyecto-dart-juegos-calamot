@@ -31,7 +31,7 @@ class VistaMenuPrincipal {
     try {
       if (opcion == "J") {
         if (Prejuego.preJuegoVista(controlador)) {
-          controlador.juego = true; // <--- Activamos el modo juego
+          controlador.juego = true;
         }
       } else if (opcion == "B") {
         TiendaVista.mostrarCatalogo(controlador);
@@ -47,7 +47,7 @@ class VistaMenuPrincipal {
         controlador.usuarioCorrecto = null;
         askData.mostrarMensaje("Sessió tancada.");
       } else if (opcion == "T") {
-        controlador.salir = true; // <--- Cerramos la app
+        controlador.salir = true;
       }
     } on CalamotException catch (e) {
       askData.mostrarError(e.missatge);

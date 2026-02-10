@@ -7,8 +7,8 @@ class Jugador {
 
 
 
-  final List<String> amigos = [];        // Lista de emails (Strings) [3]
-  final List<Licencia> licencias = [];  // Lista de Objetos Licencia [3]
+  final List<String> amigos = [];
+  final List<Licencia> licencias = [];
 
   Jugador({required this.email, required this.nick, required this.contrasena})
       : fechaCreacion = DateTime.now();

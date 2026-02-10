@@ -26,7 +26,7 @@ void main(List<String> arguments) {
   final controlador = ControladorModeloVista();
   controlador.inicializarUsuariosPrueba();
 
-  while (!controlador.salir) { // <--- Mira el controlador
+  while (!controlador.salir) {
     if (controlador.usuarioCorrecto == null) {
       VistaLogin.mostrar(controlador);
     }

@@ -21,7 +21,7 @@ class VistaLogin {
     } else if (opcion == "R") {
       vistaRegistro(controlador);
     } else if (opcion == "S") {
-      controlador.salir = true; // <--- Cambiamos el controlador directamente
+      controlador.salir = true;
     } else {
       askData.mostrarMensaje("Esa opcion no exsiste");
     }
